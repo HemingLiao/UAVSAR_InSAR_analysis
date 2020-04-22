@@ -8,6 +8,7 @@ import glob
 import os
 import matplotlib.pyplot as plt
 import datetime
+from dateutil import relativedelta
 import matplotlib.dates as mdates
 import numpy as np
 
@@ -41,16 +42,23 @@ for site_name in sites:
     for date in acq_date_list_sort:
         dates_list.append(datetime.datetime.strptime(date, '%y%m%d'))
 
-    x0 = mdates.date2num(dates_list)
-    levels = np.tile([0.1, 0.25],
+    acq_Nums = len(dates_list)
+
+    if acq_Nums>20:
+        tile_value = [0.1, 0.25]
+    else:
+        tile_value = [0.1, 0.1]
+
+    levels = np.tile(tile_value,
                      int(np.ceil(len(dates_list)/2)))[:len(dates_list)]
 
     # Create figure and plot a stem plot with the date
     fig, ax = plt.subplots(figsize=(14, 4), constrained_layout=True)
-    ax.set(title="UAVSAR acquisition dates: " + site_name.split('_')[0])
+    #ax.set(title="UAVSAR acquisitions: " + site_name.split('_')[0],FontSize=12)
+    fig.suptitle("UAVSAR acquisitions: " + site_name.split('_')[0],FontSize=12)
 
     markerline, stemline, baseline = ax.stem(dates_list, levels,
-                                         linefmt="C2--", basefmt="k-")
+                                         linefmt="C1-", basefmt="k-")
     plt.setp(markerline, mec="r", mfc="w", zorder=1)
 
     # Shift the markers to the baseline by replacing the y-data by zeros.
@@ -62,8 +70,14 @@ for site_name in sites:
         ax.annotate(r, xy=(d, l), xytext=(20, np.sign(l)*3),
                 textcoords="offset points", va=va, ha="right",rotation=60)
     
-    # format xaxis with 3 month intervals
-    ax.get_xaxis().set_major_locator(mdates.MonthLocator(interval=3))
+    # format xaxis with 1 or 2 or 3 month intervals
+    if acq_Nums>=40:  #the 60,30 value is a rough value, can be changed if necessary.
+        interval_value = 3
+    elif acq_Nums<40 and acq_Nums>=20:
+        interval_value = 2
+    elif acq_Nums<20:
+        interval_value = 1
+    ax.get_xaxis().set_major_locator(mdates.MonthLocator(interval=interval_value))
     ax.get_xaxis().set_major_formatter(mdates.DateFormatter("%Y/%m"))
     plt.setp(ax.get_xticklabels(), rotation=30, ha="right")
 
@@ -73,9 +87,10 @@ for site_name in sites:
         ax.spines[spine].set_visible(False)
 
     ax.margins(y=0.1)
-    plt.ylim(-0.03,.4)
+    plt.ylim(-0.03,1.4*tile_value[-1])
     plt.show()
-    outfig = site_name.split('_')[0] + '-acquisitions-timeline.pdf'
+    outdir = '/10TBstorage/Heming/coherence/results/timeline_plots'
+    outfig = os.path.join(outdir,site_name.split('_')[0] + '-acquisitions-timeline.pdf')
     plt.savefig(outfig,dpi=300)
     print('\n')
 
