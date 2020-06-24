@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Winnip-31606.kml</name>
+	<Style id="failed">
+		<LineStyle>
+			<color>ff2c00ff</color>
+			<width>1.5</width>
+		</LineStyle>
+	</Style>
+	<Style id="failed0">
+		<LineStyle>
+			<color>ff2c00ff</color>
+			<width>1.5</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="failed1">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#failed</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#failed0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Placemark>
+		<name>Winnip-31606</name>
+		<styleUrl>#failed1</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+				-98.054420471,49.808807373,0  -98.267852783,49.664005280,0  -98.502983093,49.818485260,0  -98.289924622,49.963500977,0  -98.054420471,49.808807373,0
+			</coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>
